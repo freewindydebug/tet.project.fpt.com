@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Essay Presentation</title>
+    <title>Essay Upload</title>
     <style>
         body {
             font-family: "Times New Roman", serif;
@@ -11,32 +11,47 @@
             max-width: 800px;
             line-height: 1.8;
             padding: 20px;
-        }
-        h1 {
             text-align: center;
-            font-size: 2.5em;
         }
-        .essay {
-            text-align: justify;
+        .content-area {
+            width: 100%;
+            min-height: 300px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            text-align: left;
         }
         .image-container {
-            text-align: center;
-            margin: 20px 0;
+            margin-top: 20px;
         }
         .image-container img {
             max-width: 100%;
             height: auto;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Title of Your Essay</h1>
-    <div class="essay">
-        <p>Start writing or pasting your essay here. The text will be displayed in a structured and readable format.</p>
-        <div class="image-container">
-            <img src="your-image.jpg" alt="Essay-related image">
-        </div>
-        <p>Continue your essay with well-structured paragraphs and additional images as needed.</p>
+    <div class="content-area" contenteditable="true">
+        <p>Start writing or insert an image here...</p>
     </div>
+    <br>
+    <input type="file" id="imageUpload" accept="image/*" multiple>
+    <div class="image-container" id="imagePreview"></div>
+    
+    <script>
+        document.getElementById('imageUpload').addEventListener('change', function(event) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '';
+            Array.from(event.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    document.querySelector('.content-area').appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </body>
 </html>
